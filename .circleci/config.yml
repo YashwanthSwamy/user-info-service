@@ -24,6 +24,5 @@ jobs:
           command: |
             ./cc-test-reporter before-build
             npm run test:coverage -- --coverage
-            ./cc-test-reporter after-build --exit-code $?
       - store_artifacts:
           path: coverage
