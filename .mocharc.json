@@ -1,0 +1,13 @@
+{
+  "extension": [
+    ".ts"
+  ],
+  "recursive": true,
+  "spec": "./tests/unit/**/*.ts",
+  "require": [
+    "ts-node/register",
+    "./tests/unit/fixtures.ts",
+    "ts-node/register/transpile-only"
+  ],
+  "exit": true
+}

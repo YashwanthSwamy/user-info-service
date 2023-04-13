@@ -1,0 +1,20 @@
+{
+  "include": [
+    "src"
+  ],
+  "extension": [
+    ".ts"
+  ],
+  "check-coverage": true,
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ],
+  "all": true,
+  "exclude": [
+    "./node_modules",
+    "./build",
+    "./migrations",
+    "./knexfile.js"
+  ]
+}
