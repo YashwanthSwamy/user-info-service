@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import HttpStatus from "http-status-codes";
+import { Operation } from "../../../externalServices/database/enums/operation";
 import { checkAuthorizationService } from "../service/checkAuthorizationService";
 import { createUserService } from "../service/createUserService";
 import { getUserService } from "../service/getUserService";
@@ -8,9 +9,16 @@ import { updateUserService } from "../service/updateUserService";
 class UserInfoController {
     async addUser(req: Request, res: Response) {
         console.log("[Controller] Add User", { input: req.body });
-        req.body.userId = req.body.email
-        const result = await createUserService.create(req.body)
-        res.status(HttpStatus.OK);
+        const result = await createUserService.create(req.body);
+        console.log("result", result, result.status === Operation.Success);
+        if(result.status === Operation.AlreadyExists){
+            result.status = HttpStatus.CONFLICT;
+        } else if (result.status === Operation.Success){
+            result.status = HttpStatus.OK;
+        } else{
+            result.status = HttpStatus.BAD_REQUEST;
+        }
+        res.status(result.status);
         res.send(result);
     }
 
@@ -29,8 +37,8 @@ class UserInfoController {
     }
 
     async checkAuthorization(req: Request, res: Response) {
-        console.log("[Controller] Check Authorization", { input: {userId: req.params.userId} })
-        const result = await checkAuthorizationService.getCustomerInfoIfAuthorized(req.params.userId, req.query.password as string)
+        console.log("[Controller] Check Authorization", { input: req.body } );
+        const result = await checkAuthorizationService.getCustomerInfoIfAuthorized(req.body.username, req.body.password as string);
         res.status(result.status);
         res.send(result.data);
     }

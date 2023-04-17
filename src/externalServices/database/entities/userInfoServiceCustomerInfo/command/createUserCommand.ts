@@ -13,7 +13,9 @@ export class CreateCustomerCommand {
         try {
             dbResponse = (await this.query(request)) as Array<CreateUserDBResponse>;
         } catch (error) {
-            console.error("[DB] create user failed", { inputdata: request, error: error });
+            if(error.code === "23505"){
+                throw Operation.AlreadyExists;
+            }
             throw Operation.Error;
         }
 
