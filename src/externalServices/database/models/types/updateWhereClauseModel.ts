@@ -1,3 +1,3 @@
-interface UpdateWhereClauseModel {
+export interface UpdateWhereClauseModel {
     UserID: string;
 }

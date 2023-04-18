@@ -12,7 +12,7 @@ class GetUserInfoMiddleware{
     
         try {
           new GetUserInfoValidator(input)
-            .validateCustomerId()
+            .validateUserId()
     
         } catch  (err) {
           console.log(err);

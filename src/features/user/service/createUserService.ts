@@ -1,4 +1,4 @@
-import createCustomerCommand from "../../../externalServices/database/entities/userInfoServiceCustomerInfo/command/createUserCommand";
+import createUserCommand from "../../../externalServices/database/entities/userInfoServiceCustomerInfo/command/createUserCommand";
 import { Operation } from "../../../externalServices/database/enums/operation";
 import { CreateUserResponseModel } from "../model/createUserResponseModel";
 import { CreateUserModel } from "../model/createUserModel";
@@ -6,7 +6,7 @@ import { CreateUserModel } from "../model/createUserModel";
 class CreateUserService {
     async create(customerInfo: CreateUserModel) : Promise<CreateUserResponseModel> {
         try {
-            const result = await createCustomerCommand.execute(
+            const result = await createUserCommand.execute(
                 {
                     UserID: customerInfo.userId,
                     FirstName: customerInfo.firstName,

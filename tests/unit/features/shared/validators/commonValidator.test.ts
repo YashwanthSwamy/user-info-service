@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import sinon, { SinonStub } from "sinon";
-import { commonValidators } from "../../../src/features/shared/validators/commonValidators";
+import { commonValidators } from "../../../../../src/features/shared/validators/commonValidators";
 import validator from "validator";
 
 

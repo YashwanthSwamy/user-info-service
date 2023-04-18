@@ -3,9 +3,9 @@ import { Tables } from "../../../constants/tables";
 import db from "../../../dbconnector";
 import { Operation } from "../../../enums/operation";
 import { CreateUserModel } from "../../../models/DAO/createUserModel";
+import { CreateUserDBResponse } from "../../../models/types/createUserDBResponse";
 
-
-export class CreateCustomerCommand {
+export class CreateUserCommand {
 
     async execute(request: CreateUserModel): Promise<number> {
 
@@ -35,5 +35,5 @@ export class CreateCustomerCommand {
     }
 }
 
-const createCustomerCommand = new CreateCustomerCommand();
-export default createCustomerCommand;
+const createUserCommand = new CreateUserCommand();
+export default createUserCommand;

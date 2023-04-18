@@ -3,6 +3,7 @@ import { getUserQuery } from "../../../externalServices/database/entities/userIn
 import { Operation } from "../../../externalServices/database/enums/operation";
 import { getStatusCode } from "../../shared/service/getStatusCode";
 
+
 class CheckAuthorizationService {
     async getCustomerInfoIfAuthorized(userId: string, password: string){
         try {

@@ -3,6 +3,7 @@ import UserModelDTO from "../../../models/DTO/userModelDTO";
 import { Operation } from "../../../enums/operation";
 import db from "../../../dbconnector";
 import { Tables } from "../../../constants/tables";
+import { UpdateWhereClauseModel } from "../../../models/types/updateWhereClauseModel";
 
 
 export class UpdateUserCommand {
