@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:current
         environment:
-          DOCKER_HOST: tcp://localhost:2375
+          DOCKER_HOST: unix:///var/run/docker.sock
     steps:
       - checkout
       - restore_cache: # special step to restore the dependency cache
@@ -30,8 +30,6 @@ jobs:
       - run:
             name: Build and push Docker image to Heroku
             command: |
-              sudo systemctl status docker
-              sudo systemctl start docker
               sudo curl https://cli-assets.heroku.com/install.sh | sh
               HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
               HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web --app user-info
