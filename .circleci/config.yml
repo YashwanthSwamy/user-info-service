@@ -12,12 +12,6 @@ jobs:
       - restore_cache: # special step to restore the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
       - run:
-          name: Run proxy
-          command: |
-            docker pull owasp/zap2docker-stable
-            docker run --name zap -u zap -p 8080:8080 -i owasp/zap2docker-stable zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
-          background: true
-      - run:
           name: Setup Dependencies
           command: npm install
       - run:
@@ -36,34 +30,14 @@ jobs:
             npm run test:coverage -- --coverage
             ./cc-test-reporter after-build --exit-code $?
       - run:
-          command: heroku container:login
-          name: Login to Heroku Docker image registry
+          name: Install Heroku CLI
+          command: |
+              curl https://cli-assets.heroku.com/install.sh | sh
       - run:
-          name: Build Docker image to Heroku
-          command: |-
-            #!/bin/bash
-
-            PARAM_HEROKU_API_KEY="${!PARAM_HEROKU_API_KEY}"
-
-            if [ "$PARAM_RECURSIVE" == "1" ];then
-              set -- "$@" --resursive
-            fi
-
-            set -x
-            heroku container:push web --app user-info
-            set +x
-      - run:
-          name: Push Docker image to Heroku
-          command: |-
-            #!/bin/bash
-
-            heroku container:release -a "$PARAM_APP_NAME" "$PARAM_PROCESS_TYPES"
-      - run:
-            name: Build and push Docker image to Heroku
-            command: |
-              sudo curl https://cli-assets.heroku.com/install.sh | sh
-              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
-            # HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web --app user-info
-            # HEROKU_API_KEY=${HEROKU_TOKEN}heroku container:release web --app user-info
+          name: Build and push Docker image to Heroku
+          command: |
+              heroku container:login
+              heroku container:push web --app user-info
+              heroku container:release web --app user-info
       - store_artifacts:
           path: coverage
