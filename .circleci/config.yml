@@ -10,6 +10,12 @@ jobs:
       - restore_cache: # special step to restore the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
       - run:
+          name: Run proxy
+          command: |
+            docker pull owasp/zap2docker-stable
+            docker run --name zap -u zap -p 8080:8080 -i owasp/zap2docker-stable zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
+          background: true
+      - run:
           name: Setup Dependencies
           command: npm install
       - run:
