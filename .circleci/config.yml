@@ -1,10 +1,10 @@
 version: 2.1
 jobs:
   build:
-    resource_class: large
     docker:
       - image: circleci/node:current
         command: /sbin/init
+    resource_class: 2xlarge
     steps:
       - checkout
       - restore_cache: # special step to restore the dependency cache
