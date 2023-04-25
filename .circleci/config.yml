@@ -25,5 +25,12 @@ jobs:
             ./cc-test-reporter before-build
             npm run test:coverage -- --coverage
             ./cc-test-reporter after-build --exit-code $?
+      - run:
+            name: Build and push Docker image to Heroku
+            command: |
+              sudo curl https://cli-assets.heroku.com/install.sh | sh
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web --app user-info
+              HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release web --app user-info
       - store_artifacts:
           path: coverage

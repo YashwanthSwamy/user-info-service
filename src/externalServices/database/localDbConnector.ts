@@ -4,7 +4,19 @@ class LocalDbConnector {
   public getUrl() {
     return {
       client: "pg",
-      connection: environmentVariables.DB_URL
+      connection: {
+        host: environmentVariables.DB_HOST,
+        database: environmentVariables.DB_NAME,
+        user: environmentVariables.DB_USERNAME,
+        password: environmentVariables.DB_PASSWORD,
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        },
+      },
+      pool: {
+        idleTimeoutMillis: 10 * 1000
+      }
     };
   }
 }
