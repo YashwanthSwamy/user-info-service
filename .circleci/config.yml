@@ -3,8 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:current
-        command: /sbin/init
-    resource_class: xlarge
+        environment:
+          DOCKER_HOST: tcp://localhost:2375
     steps:
       - checkout
       - restore_cache: # special step to restore the dependency cache
