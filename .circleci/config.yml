@@ -1,8 +1,10 @@
 version: 2.1
+orbs:
+  heroku: circleci/heroku@2.0
 jobs:
   build:
     docker:
-      - image: circleci/node:current
+      - image: cimg/deploy:2023.04-node
         environment:
           DOCKER_HOST: tcp://localhost:2375
     steps:
@@ -33,6 +35,29 @@ jobs:
             ./cc-test-reporter before-build
             npm run test:coverage -- --coverage
             ./cc-test-reporter after-build --exit-code $?
+      - run:
+          command: heroku container:login
+          name: Login to Heroku Docker image registry
+      - run:
+          name: Build Docker image to Heroku
+          command: |-
+            #!/bin/bash
+
+            PARAM_HEROKU_API_KEY="${!PARAM_HEROKU_API_KEY}"
+
+            if [ "$PARAM_RECURSIVE" == "1" ];then
+              set -- "$@" --resursive
+            fi
+
+            set -x
+            heroku container:push web --app user-info
+            set +x
+      - run:
+          name: Push Docker image to Heroku
+          command: |-
+            #!/bin/bash
+
+            heroku container:release -a "$PARAM_APP_NAME" "$PARAM_PROCESS_TYPES"
       - run:
             name: Build and push Docker image to Heroku
             command: |
